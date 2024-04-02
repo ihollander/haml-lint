@@ -24,8 +24,8 @@ module HamlLint
     # Runs the linter against the given Haml document.
     #
     # @param document [HamlLint::Document]
-    def run(document, autocorrect: nil) # rubocop:disable Metrics
-      run_or_raise(document, autocorrect: autocorrect)
+    def run(document, autocorrect: nil, rubocop_only: nil) # rubocop:disable Metrics
+      run_or_raise(document, autocorrect: autocorrect, rubocop_only: rubocop_only)
     rescue Parser::SyntaxError => e
       location = e.diagnostic.location
       @lints <<
@@ -59,10 +59,11 @@ module HamlLint
     # Syntax or HAML-Lint internal errors. (For testing purposes)
     #
     # @param document [HamlLint::Document]
-    def run_or_raise(document, autocorrect: nil)
+    def run_or_raise(document, autocorrect: nil, rubocop_only: nil)
       @document = document
       @lints = []
       @autocorrect = autocorrect
+      @rubocop_only = rubocop_only
       visit(document.tree)
       @lints
     end

@@ -301,7 +301,14 @@ module HamlLint
       flags = %w[--format HamlLint::OffenseCollector]
       flags += ignored_cops_flags
       flags += rubocop_autocorrect_flags
+      flags += rubocop_only_flags
       flags
+    end
+
+    def rubocop_only_flags
+      return [] unless @rubocop_only
+
+      ['--only', @rubocop_only]
     end
 
     def rubocop_autocorrect_flags

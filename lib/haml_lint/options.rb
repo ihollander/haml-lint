@@ -70,6 +70,10 @@ module HamlLint
         @options[:autocorrect] ||= :safe
       end
 
+      parser.on('--rubocop-only RUBOCOP_ONLY', 'Only run the specified Rubocop cop(s)') do |rubocop_only|
+        @options[:rubocop_only] = rubocop_only
+      end
+
       parser.on('-s', '--stdin FILE', 'Pipe source from STDIN, using FILE in ' \
           'offense when combined with --auto-correct and --stdin.') do |file_path|
         @options[:stdin] = file_path

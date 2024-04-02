@@ -27,6 +27,7 @@ module HamlLint
       @cache = {}
       @autocorrect = options[:autocorrect]
       @autocorrect_only = options[:autocorrect_only]
+      @rubocop_only = options[:rubocop_only]
       @autocorrect_stdout = options[:stdin] && options[:stderr]
 
       report(options)
@@ -103,7 +104,7 @@ module HamlLint
 
       unless @autocorrect_only
         lint_arrays << linters.map do |linter|
-          linter.run(document)
+          linter.run(document, rubocop_only: @rubocop_only)
         end
       end
       lint_arrays.flatten
@@ -121,7 +122,7 @@ module HamlLint
 
       autocorrecting_linters = linters.select(&:supports_autocorrect?)
       lint_arrays << autocorrecting_linters.map do |linter|
-        linter.run(document, autocorrect: @autocorrect)
+        linter.run(document, autocorrect: @autocorrect, rubocop_only: @rubocop_only)
       end
 
       document.write_to_disk!
